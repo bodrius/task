@@ -8,9 +8,6 @@ const App = () => {
   // Create a client
   const queryClient = new QueryClient();
 
-  // // Access the client
-  // const queryClient = useQueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
