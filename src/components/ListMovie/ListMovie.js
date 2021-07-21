@@ -7,36 +7,35 @@ import MovieCard from '../MovieCard/MovieCard';
 
 const ListMovie = () => {
   const [page, setPage] = useState(1);
-  const [DATA, setDATA] = useState([]);
+  const [dataMovies, setDataMovies] = useState([]);
 
-  const updateData = async () => {
-    setPage(prevState => prevState + 1);
-    console.log(`page`, page);
-
-    const {data} = await refetch();
-    // setDATA([...DATA, ...data?.data?.results]);
-  };
-  //   console.log(`DATA`, DATA);
-  const {isLoading, refetch} = useQuery(
+  const {isLoading, refetch, isFetching} = useQuery(
     ['movieList', page],
     () => requests.getMovie(page),
     {
       keepPreviousData: true,
       onSuccess: data => {
-        console.log(`data1`, data);
-        // setDATA(data?.data?.results);
-        setDATA([data?.data?.results.push()]);
+        if (data?.data?.page >= 2) {
+          setDataMovies([...dataMovies, ...data?.data?.results]);
+        } else {
+          setDataMovies(data?.data?.results);
+        }
       },
     },
   );
 
+  const updateData = async () => {
+    setPage(prevState => prevState + 1);
+    await refetch();
+  };
+
   return (
     <FlatList
-      data={DATA}
+      data={dataMovies}
       onEndReached={updateData}
       refreshing={!!isLoading}
-      onEndReachedThreshold={0.0}
-      keyExtractor={item => item?.id.toString()}
+      onEndReachedThreshold={0.5}
+      keyExtractor={(item, index) => item.id}
       renderItem={({item}) => (
         <MovieCard
           key={item?.id}
@@ -45,7 +44,7 @@ const ListMovie = () => {
         />
       )}
       ListFooterComponent={() =>
-        isLoading ? <ActivityIndicator size="large" color="red" /> : null
+        !isFetching ? <ActivityIndicator size="small" color="red" /> : null
       }
     />
   );
