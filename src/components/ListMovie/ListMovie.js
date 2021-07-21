@@ -44,7 +44,7 @@ const ListMovie = () => {
         />
       )}
       ListFooterComponent={() =>
-        !isFetching ? <ActivityIndicator size="small" color="red" /> : null
+        !isFetching ? <ActivityIndicator size="large" color="red" /> : null
       }
     />
   );
