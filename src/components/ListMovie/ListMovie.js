@@ -36,13 +36,7 @@ const ListMovie = () => {
       refreshing={!!isLoading}
       onEndReachedThreshold={0.5}
       keyExtractor={(item, index) => item.id}
-      renderItem={({item}) => (
-        <MovieCard
-          key={item?.id}
-          imagePath={item?.poster_path}
-          title={item?.original_title}
-        />
-      )}
+      renderItem={({item}) => <MovieCard key={item?.id} item={item} />}
       ListFooterComponent={() =>
         !isFetching ? <ActivityIndicator size="large" color="red" /> : null
       }
