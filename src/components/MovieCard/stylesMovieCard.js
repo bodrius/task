@@ -6,6 +6,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    borderColor: '#00008b',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 5,
   },
   image: {
     width: 200,
