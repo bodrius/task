@@ -3,10 +3,10 @@ import {View, Image, Text, TouchableOpacity} from 'react-native';
 import {styles} from './stylesMovieCard';
 import DetailedInfoMovieModal from '../DetailedInfoMovie/DetailedInfoMovie';
 
-const MovieCard = ({item}) => {
+const MovieCard = ({item, getCorrectListFilms}) => {
   const [showModal, setShowModal] = useState(false);
-
   const {poster_path, title} = item;
+
   const showDetailedInfo = () => {
     setShowModal(state => !state);
   };
@@ -34,9 +34,10 @@ const MovieCard = ({item}) => {
       </TouchableOpacity>
       {showModal && (
         <DetailedInfoMovieModal
+          item={item}
           showModal={showModal}
           setShowModal={setShowModal}
-          item={item}
+          getCorrectListFilms={getCorrectListFilms}
         />
       )}
     </>

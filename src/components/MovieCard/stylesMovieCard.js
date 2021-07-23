@@ -19,5 +19,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     fontSize: 20,
     fontWeight: '600',
+    marginBottom: 15,
   },
 });
