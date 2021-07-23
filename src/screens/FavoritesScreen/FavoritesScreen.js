@@ -1,5 +1,12 @@
 import React, {useState, useCallback} from 'react';
-import {FlatList, SafeAreaView} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Text,
+} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {useAsyncStorage} from '../../hooks/useAsyncStorage';
@@ -10,6 +17,7 @@ import {styles} from './stylesFavoritesScreen';
 const FavoritesScreen = () => {
   const {getStorageItem} = useAsyncStorage();
   const [favoriteList, setFavoriteList] = useState([]);
+  const [text, setText] = useState('');
 
   useFocusEffect(
     useCallback(() => {
@@ -23,20 +31,52 @@ const FavoritesScreen = () => {
     );
   };
 
+  const filterFavoriteList = (value, array) => {
+    if (value?.trim()) {
+      return array.filter(item =>
+        item.title.toLowerCase().includes(value.toLowerCase()),
+      );
+    } else {
+      return array;
+    }
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={favoriteList.reverse()}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <MovieCard
-            key={item?.id}
-            item={item}
-            getCorrectListFilms={getCorrectListFilms}
-          />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        setText('');
+        Keyboard.dismiss();
+      }}>
+      <SafeAreaView style={styles.container}>
+        <TextInput
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={setText}
+          value={text}
+          placeholder="Search favorite films"
+          keyboardType="default"
+        />
+        {favoriteList.length !== 0 ? (
+          filterFavoriteList(text, favoriteList).length === 0 ? (
+            <Text>Oooppsss...Nothing found :(</Text>
+          ) : (
+            <FlatList
+              data={filterFavoriteList(text, favoriteList)?.reverse()}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <MovieCard
+                  key={item?.id}
+                  item={item}
+                  getCorrectListFilms={getCorrectListFilms}
+                />
+              )}
+            />
+          )
+        ) : (
+          <Text>Empty favorite list</Text>
         )}
-      />
-    </SafeAreaView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 

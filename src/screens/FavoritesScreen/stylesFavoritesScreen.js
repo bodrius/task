@@ -5,4 +5,12 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20,
     flex: 1,
   },
+  input: {
+    marginTop: 10,
+    borderColor: 'red',
+    borderWidth: 1,
+    borderRadius: 13,
+    height: 50,
+    marginBottom: 50,
+  },
 });
