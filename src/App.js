@@ -14,7 +14,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await getStorageItem(Constants.addToFavoriteList).then(result => {
-        if (result.length) {
+        if (result?.length) {
           return;
         } else {
           setFavoriteList();

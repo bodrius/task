@@ -1,13 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  FlatList,
-  SafeAreaView,
-} from 'react-native';
+import {FlatList, SafeAreaView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {useAsyncStorage} from '../../hooks/useAsyncStorage';
@@ -21,29 +13,28 @@ const FavoritesScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      async function getFavoriteList() {
-        await getStorageItem(Constants.addToFavoriteList).then(result => {
-          // console.log(`result`, result);
-          // if (result) {
-          //   return setFavoriteList(prevState => [...prevState, result]);
-          // }
-          // else {
-          return setFavoriteList(result);
-          // }
-        });
-      }
-      getFavoriteList();
+      getCorrectListFilms();
     }, []),
   );
 
-  console.log(`favoriteList--`, favoriteList);
+  const getCorrectListFilms = async () => {
+    await getStorageItem(Constants.addToFavoriteList).then(result =>
+      setFavoriteList(result),
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={favoriteList}
-        keyExtractor={(item, index) => item.id}
-        renderItem={({item}) => <MovieCard key={item?.id} item={item} />}
+        data={favoriteList.reverse()}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => (
+          <MovieCard
+            key={item?.id}
+            item={item}
+            getCorrectListFilms={getCorrectListFilms}
+          />
+        )}
       />
     </SafeAreaView>
   );

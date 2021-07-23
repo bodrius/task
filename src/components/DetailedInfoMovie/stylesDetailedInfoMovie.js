@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    marginTop: 20,
+    marginTop: 30,
     textAlign: 'center',
     fontWeight: '600',
     fontSize: 20,
@@ -20,6 +20,11 @@ export const styles = StyleSheet.create({
   },
   description: {
     marginBottom: 30,
-    fontSize:20
+    fontSize: 20,
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 53,
+    right: 0,
   },
 });
